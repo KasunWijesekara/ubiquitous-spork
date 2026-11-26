@@ -1,0 +1,40 @@
+
+[8] tau-symmetrised value function, from the verified rank-7^tau ladder
+   tau         format            R_tau    zeta(tau)    omega_est
+     1        <2,2,2>                7     7.000000  2.807354922   ok
+     2        <4,4,4>               49     7.000000  2.807354922   ok
+     3        <8,8,8>              343     7.000000  2.807354922   ok
+     4     <16,16,16>             2401     7.000000  2.807354922   ok
+     5     <32,32,32>            16807     7.000000  2.807354922   ok
+     6     <64,64,64>           117649     7.000000  2.807354922   ok
+  -> tau-invariant, as it must be when R_tau = 7^tau: zeta(tau) = 7 and omega_est = log2(7) = 2.807354922
+  PASS: value function reproduces log2(7) for tau = 1..6
+
+[9] anchors: omega implied by published rank upper bounds
+  <2,2,2>  R=  7  omega <= 3*log2(7)/log2(8) = 2.807355   [Strassen 1969 (rank exactly 7)]
+  <2,2,3>  R= 11  omega <= 3*log2(11)/log2(12) = 2.894952   [Hopcroft-Kerr / Smirnov]
+  <3,3,3>  R= 23  omega <= 3*log2(23)/log2(27) = 2.854050   [Laderman / Smirnov]
+  <4,4,4>  R= 49  omega <= 3*log2(49)/log2(64) = 2.807355   [Strassen squared (7^2), verified in strassen.py]
+  PASS: Strassen anchor omega <= 2.807354922 == log2(7)
+
+[10] what a 9/4-type claim would need (we do NOT attempt one)
+  target omega = 2.25.  Under the <2,2,2> normalisation the bound is omega = log2(zeta),
+  so omega = 2.25 requires zeta = 2^2.25 = 4.756828 instead of zeta = 7.
+  Equivalently R_tau must be about 4.756828^tau rather than 7^tau,
+  a saving factor of (4.756828/7)^tau = 0.679547^tau, i.e. -0.557355 bits per tensor power.
+    tau= 4: 7^tau =                    2,401   needed ~ 2^9 =                      512   ratio 4.69x
+    tau= 8: 7^tau =                5,764,801   needed ~ 2^18 =                  262,144   ratio 21.99x
+    tau=16: 7^tau =       33,232,930,569,601   needed ~ 2^36 =           68,719,476,736   ratio 483.60x
+  A checkable claim of this shape would have to supply ALL of:
+    (a) an explicit finite decomposition of some <n,m,p> (or a tau-power), with
+        integer/rational entries and its exact rank -- checkable by tensor_verify.py;
+    (b) an argument that R_tau < R^tau genuinely holds (a better base decomposition,
+        or a rectangular/disjoint combination that provably lowers the value);
+    (c) the theory step turning that saving into an asymptotic-rank bound --
+        laser method / asymptotic spectrum / support functionals. This is a
+        mathematical proof, NOT a finite computation, and no decomposition
+        verifier can check it.  That is the boundary of what this artifact does.
+  The plain Kronecker ladder verified in strassen.py shows R_tau = 7^tau exactly,
+  so no saving of this kind is present in Strassen's decomposition itself.
+
+PASS: omega.py -- value function and exponent anchors

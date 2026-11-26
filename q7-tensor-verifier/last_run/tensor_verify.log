@@ -1,0 +1,29 @@
+tensor_verify.py -- exact <n,m,p> tensor-decomposition verifier
+arithmetic: fractions.Fraction (exact rationals), no floats in the check
+
+[schoolbook rank-8] PASS: <2,2,2> mode=full rank=8 components_checked=64 mismatches=0
+[schoolbook rank-27] PASS: <3,3,3> mode=full rank=27 components_checked=729 mismatches=0
+
+[schoolbook rank-8: baseline] PASS: <2,2,2> mode=full rank=8 components_checked=64 mismatches=0
+[schoolbook rank-8: corrupted W entry (+1)] FAIL: <2,2,2> mode=full rank=8 components_checked=64 mismatches=1
+[schoolbook rank-8: corrupted W entry (+1)]       max|actual-expected| = 1 (= 1)
+[schoolbook rank-8: corrupted W entry (+1)]       component[(i=0,j=1),(j'=1,k=0),(i'=0,k'=0)]  expected=1  actual=2
+[schoolbook rank-8: wrong coefficient (+1)] FAIL: <2,2,2> mode=full rank=8 components_checked=64 mismatches=1
+[schoolbook rank-8: wrong coefficient (+1)]       max|actual-expected| = 1 (= 1)
+[schoolbook rank-8: wrong coefficient (+1)]       component[(i=0,j=0),(j'=0,k=1),(i'=0,k'=1)]  expected=1  actual=2
+[schoolbook rank-8: term dropped (rank 7)] FAIL: <2,2,2> mode=full rank=7 components_checked=64 mismatches=1
+[schoolbook rank-8: term dropped (rank 7)]       max|actual-expected| = 1 (= 1)
+[schoolbook rank-8: term dropped (rank 7)]       component[(i=1,j=1),(j'=1,k=1),(i'=1,k'=1)]  expected=1  actual=0
+  PASS: schoolbook rank-8: accepted the correct decomposition, rejected all 3 corrupted variants
+
+[weak check on corrupted decomposition] PASS: <2,2,2> mode=diagonal rank=7 components_checked=8 mismatches=0
+[full check on corrupted decomposition] FAIL: <2,2,2> mode=full rank=7 components_checked=64 mismatches=2
+[full check on corrupted decomposition]       max|actual-expected| = 1 (= 1)
+[full check on corrupted decomposition]       component[(i=1,j=1),(j'=1,k=0),(i'=0,k'=1)]  expected=0  actual=1
+[full check on corrupted decomposition]       component[(i=1,j=1),(j'=0,k=0),(i'=0,k'=1)]  expected=0  actual=-1
+  PASS: 'diagonal' check is fooled by an off-diagonal corruption while the full tensor check rejects it
+
+[schoolbook with coeff=1/3, W*3 (rationals)] PASS: <2,2,2> mode=full rank=8 components_checked=64 mismatches=0
+  PASS: mis-shaped term rejected with ValueError: term[0].U: expected 2 rows, got 3
+
+PASS: tensor_verify.py self-test (verifier accepts correct, rejects wrong)
